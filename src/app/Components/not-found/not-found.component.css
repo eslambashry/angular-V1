@@ -1,0 +1,59 @@
+body {
+    background-color: #f7f7f7;
+}
+
+header.page-container {
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.icon.icon-airbnb {
+    text-decoration: none;
+    color: #ff5a5f;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.screen-reader-only {
+    position: absolute;
+    left: -9999px;
+}
+
+.text-jumbo.text-ginormous {
+    font-size: 145px;
+    color: #ff5a5f;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h6 {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+ul.list-unstyled li {
+    margin-bottom: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: #008489; /* Default link color */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.text-center img {
+    max-width: 100%;
+    height: auto;
+}
+
