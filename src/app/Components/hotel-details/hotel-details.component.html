@@ -1,0 +1,74 @@
+<div *ngIf="isLoading" class="text-center mt-5">
+  <p>Loading Hotels Details...</p>
+</div>
+
+<div *ngIf="!isLoading">
+  @if(property){
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div *ngFor="let photo of property.photos; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
+                <img [src]="photo.url" class="d-block w-100" [alt]="photo.caption">
+                <div class="carousel-caption d-none d-md-block">
+                  <h5>{{ photo.caption }}</h5>
+                </div>
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ property.title }}</h5>
+            <p class="card-text">{{ property.description }}</p>
+            <p><strong>Price:</strong> {{ property.price | currency: '€' }} </p>
+            <p><strong>Location:</strong> {{ property.location.address }}, {{ property.location.city }}, {{ property.location.state }}, {{ property.location.country }} - {{ property.location.zipCode }}</p>
+            <p><strong>Type:</strong> {{ property.type }}</p>
+
+            <h6>Amenities:</h6>
+            <ul class="list-inline">
+              <li *ngFor="let amenity of property.amenities" class="list-inline-item badge bg-primary">{{ amenity }}</li>
+            </ul>
+
+            <h6>Booking Details:</h6>
+            <p><strong>Check-In:</strong> {{ property.bookingDetails.checkInDate | date:'yyyy-MM-dd' }}</p>
+            <p><strong>Check-Out:</strong> {{ property.bookingDetails.checkOutDate | date:'yyyy-MM-dd' }}</p>
+            <p><strong>Available Dates:</strong></p>
+            <ul>
+              <li *ngFor="let date of property.bookingDetails.availableDates">{{ date | date:'yyyy-MM-dd' }}</li>
+            </ul>
+
+            <h6>Owner Details:</h6>
+            <p><strong>Name:</strong> {{ property.owner.name }}</p>
+            <p><strong>Email:</strong> {{ property.owner.email }}</p>
+
+            <div class="mb-3">
+              <h6>Reviews:</h6>
+              <div *ngFor="let review of property.reviews" class="review">
+                <p><strong>Rating:</strong> {{ review.rating }}</p>
+                <p><strong>Comment:</strong> {{ review.comment }}</p>
+                <p><strong>Date:</strong> {{ review.date | date:'yyyy-MM-dd' }}</p>
+              </div>
+            </div>
+
+            <p class="text-muted"><small>Created on: {{ property.createdAt | date:'yyyy-MM-dd' }}</small></p>
+            <p class="text-muted"><small>Updated on: {{ property.updatedAt | date:'yyyy-MM-dd' }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+  
+  @else{
+      <strong>Product Not Found</strong>
+  }
+</div>

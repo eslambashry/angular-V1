@@ -1,0 +1,50 @@
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Align items vertically centered */
+    padding: 10px; /* Add some padding if needed */
+  }
+  
+  .carousel-item img {
+    max-width: 100%; /* Ensure images are responsive */
+    height: auto;
+  }
+
+
+.num{
+    margin: 10rem;
+}
+
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    margin-bottom: 10rem;
+  }
+  
+  .carousel-control-prev,
+  .carousel-control-next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: #fff;
+    border-radius: 50%;
+    font-size: 24px; /* Adjust icon size */
+    text-decoration: none;
+  }
+  
+  .carousel-control-prev:hover,
+  .carousel-control-next:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Darker background on hover */
+  }
+  
+  .c1abgzgs{
+    text-align: center;
+}
