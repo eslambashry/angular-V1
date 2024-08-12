@@ -1,0 +1,5 @@
+<h3>Order Confirmation</h3>
+<div *ngIf="orderConfirmation">
+  <p>Thank you for your purchase, {{ orderConfirmation.customerName }}!</p>
+  <p>Your order ID is {{ orderConfirmation.orderId }}.</p>
+</div>

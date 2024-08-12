@@ -1,43 +1,57 @@
-<div *ngIf="isLoading" class="text-center mt-5">
-  <p>Loading Hotels...</p>
-</div>
-
-<div *ngIf="!isLoading" class="container mt-5">
-  <div class="row">
-    <div *ngFor="let property of properties" class="col-md-4 mb-4">
-      <div class="card product-card">
-        <div id="carousel{{property.id}}" class="carousel slide product-image" data-bs-ride="carousel">
-          <div class="carousel-inner">
-            <div *ngFor="let photo of property.photos; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
-              <img [src]="photo.url" [alt]="photo.caption" class="d-block w-100">
+<div class="body">
+  <div *ngIf="isLoading" class="text-center mt-5">
+    <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  </div>
+  
+  <div *ngIf="!isLoading" class="container mt-5">
+    <div class="row">
+      <div *ngFor="let property of properties" class="col-md-4 mb-4">
+        <div class="card product-card">
+          <div id="carousel{{property.id}}" class="carousel slide product-image" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div *ngFor="let photo of property.photos; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
+                <img [src]="photo.url" [alt]="photo.caption" class="d-block w-100">
+              </div>
             </div>
+            <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + property.id" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + property.id" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
           </div>
-          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + property.id" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + property.id" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+          <a [routerLink]="['/hotel-details', property._id]">
+            <div class="card-body">
+              <h5 class="card-title product-title">{{ property.title }}</h5>
+              <div class="product-location card-text">{{ property.location.city }}, {{ property.location.state }}</div>
+              <div class="product-price card-text">{{ property.price | currency:'€' }}</div>
+              <div class="product-rating">
+                <span class="rating-value">{{ property.rating }}</span>
+                <span class="rating-count">({{ property.reviews.length }} reviews)</span>
+              </div>
+              <div class="product-amenities">
+                <ul class="list-unstyled">
+                  <li *ngFor="let amenity of property.amenities" class="badge bg-primary me-2">{{ amenity }}</li>
+                </ul>
+              </div>
+            </div>
+          </a>
         </div>
-        <a [routerLink]="['/hotel-details', property._id]">
-          <div class="card-body">
-            <h5 class="card-title product-title">{{ property.title }}</h5>
-            <div class="product-location card-text">{{ property.location.city }}, {{ property.location.state }}</div>
-            <div class="product-price card-text">{{ property.price | currency:'€' }}</div>
-            <div class="product-rating">
-              <span class="rating-value">{{ property.rating }}</span>
-              <span class="rating-count">({{ property.reviews.length }} reviews)</span>
-            </div>
-            <div class="product-amenities">
-              <ul class="list-unstyled">
-                <li *ngFor="let amenity of property.amenities" class="badge bg-primary me-2">{{ amenity }}</li>
-              </ul>
-            </div>
-          </div>
-        </a>
       </div>
     </div>
   </div>
+  
 </div>

@@ -1,0 +1,76 @@
+    1. Users
+            User ID (Primary Key)
+            Name
+            Email
+            Password Hash
+            Phone Number
+            Profile Picture URL
+            User Type (e.g., Host, Guest)
+            Bio
+            Created At
+            Updated At
+    2. Listings 
+            Listing ID (Primary Key)
+            Host ID (Foreign Key to Users)
+            Title
+            Description
+            Address
+            Street
+            City
+            State
+            Country
+            ZIP Code
+            Latitude
+            Longitude
+            Price per Night
+            Number of Bedrooms
+            Number of Bathrooms
+            Max Guests
+            Amenities (e.g., Wi-Fi, Pool, Kitchen)
+            Photos (Array of URLs)
+            Rating (Aggregate rating based on reviews)
+            Created At
+            Updated At
+    3. Reviews
+            Review ID (Primary Key)
+            Listing ID (Foreign Key to Listings)
+            Reviewer ID (Foreign Key to Users)
+            Rating (e.g., 1 to 5 stars)
+            Comment
+            Created At
+    4. Reservations
+            Reservation ID (Primary Key)
+            Listing ID (Foreign Key to Listings)
+            Guest ID (Foreign Key to Users)
+            Check-In Date
+            Check-Out Date
+            Total Price
+            Status (e.g., Confirmed, Pending, Cancelled)
+            Created At
+    5. Payments
+            Payment ID (Primary Key)
+            Reservation ID (Foreign Key to Reservations)
+            Amount
+            Payment Method (e.g., Credit Card, PayPal)
+            Payment Status (e.g., Completed, Pending)
+            Transaction ID
+            Created At
+    6. Messages
+            Message ID (Primary Key)
+            Sender ID (Foreign Key to Users)
+            Receiver ID (Foreign Key to Users)
+            Content
+            Timestamp
+    7. Wishlists
+            Wishlist ID (Primary Key)
+            User ID (Foreign Key to Users)
+            Title
+            Description
+            Listings (Array of Listing IDs)
+    8. Notifications
+            Notification ID (Primary Key)
+            User ID (Foreign Key to Users)
+            Content
+            Type (e.g., Reservation Confirmation, Review)
+            Timestamp
+            Read Status

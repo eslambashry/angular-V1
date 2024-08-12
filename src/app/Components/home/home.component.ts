@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit{
   constructor(private HotelService: HotelService) { }
 
   ngOnInit(): void {
+    
   setTimeout(() => {
 
     this.HotelService.getProperties().subscribe((response) => {

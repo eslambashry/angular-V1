@@ -1,0 +1,5 @@
+<div *ngIf="message" [ngClass]="alertTypeClass()" role="alert">
+    {{ message }}
+    <button type="button" class="btn-close" aria-label="Close" (click)="message = ''"></button>
+  </div>
+  

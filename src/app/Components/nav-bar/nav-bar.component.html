@@ -9,15 +9,10 @@
       <li class="nav-item active">
         <a routerLink="/" routerLinkActive="active" class="nav-link" href="/">Home</a>
       </li>
-      <li class="nav-item active">
-        <a routerLink="/register" routerLinkActive="active" class="nav-link" href="/">register</a>
-      </li>
-      <li class="nav-item active">
-        <a routerLink="/login" routerLinkActive="active" class="nav-link" href="/">login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Dropdown
@@ -29,13 +24,178 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+      <li class="nav-item active">
+        <a routerLink="/booking" routerLinkActive="active" class="nav-link" href="/booking">Booking</a>
+      </li>
+      <li class="nav-item active">
+        <a routerLink="/add" routerLinkActive="active" class="nav-link" href="/add">Add</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal" [hidden]="isLogged">
+    Login
+  </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal" [hidden]="isLogged">
+          Register
+        </button>
+        <button type="button" class="btn btn-danger" [hidden]="!isLogged" (click)="Logout()">
+          LogOut
+        </button>
+      </ul>
+    </div>
   </div>
 </nav>
+
+
+
+<!-- Login Modal -->
+<app-shared-alert *ngIf="showLoginSuccessAlert" type="success" [message]="loginAlertMessage"></app-shared-alert>
+<app-shared-alert *ngIf="showLoginErrorAlert" type="danger" [message]="loginAlertMessage"></app-shared-alert>
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <div class="form-floating mb-3">
+            <input 
+              id="loginEmail" 
+              type="email" 
+              class="form-control" 
+              placeholder="Email"
+              formControlName="email"
+              [ngClass]="{'is-invalid': loginForm.get('email')?.touched && loginForm.get('email')?.invalid}">
+            <label for="loginEmail">Email</label>
+            <!-- Validation Messages for Email -->
+            <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid" class="invalid-feedback">
+              <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['minlength']">Email must be at least 5 characters long.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['maxlength']">Email cannot be more than 50 characters long.</div>
+              <div *ngIf="loginForm.get('email')?.errors?.['pattern']">Email format is incorrect.</div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input 
+              id="loginPassword" 
+              type="password" 
+              class="form-control" 
+              placeholder="Password"
+              formControlName="password"[ngClass]="{'is-invalid': loginForm.get('password')?.touched && loginForm.get('password')?.invalid}">
+              <label for="loginPassword">Password</label>
+
+              <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid" class="invalid-feedback">
+                <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+              <div *ngIf="loginForm.get('password')?.errors?.['minlength']">password cannot be more than 8 characters long.</div>
+                
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Register Modal -->
+
+<app-shared-alert *ngIf="showRegisterSuccessAlert" type="success" [message]="registerAlertMessage"></app-shared-alert>
+<app-shared-alert *ngIf="showRegisterErrorAlert" type="danger" [message]="registerAlertMessage"></app-shared-alert>
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerModalLabel">Register</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+          <div class="form-floating mb-3">
+  <input 
+  id="name"
+  type="text"
+  class="form-control"
+  placeholder="Name"
+  formControlName="name"
+  [ngClass]="{'is-invalid': registerForm.get('name')?.touched && registerForm.get('name')?.invalid}"
+  >
+  <div *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid" class="invalid-feedback">
+    <div *ngIf="registerForm.get('name')?.errors?.['required']">Name is required.</div>
+    <div *ngIf="registerForm.get('name')?.errors?.['minlength']">Name must be at least 5 characters long.</div>
+    <div *ngIf="registerForm.get('name')?.errors?.['maxlength']">Name cannot be more than 15 characters long.</div>
+  </div>
+            <label for="name">Name</label>
+            
+          </div>
+          <div class="form-floating mb-3">
+<input
+id="email"
+type="email"
+class="form-control"
+placeholder="Email"
+formControlName="email"
+[ngClass]="{'is-invalid': registerForm.get('email')?.touched && registerForm.get('email')?.invalid}"  
+>
+<div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="invalid-feedback">
+  <div *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</div>
+  <div *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email format.</div>
+  <div *ngIf="registerForm.get('email')?.errors?.['minlength']">Email must be at least 5 characters long.</div>
+  <div *ngIf="registerForm.get('email')?.errors?.['maxlength']">Email cannot be more than 50 characters long.</div>
+  <div *ngIf="registerForm.get('email')?.errors?.['pattern']">Email format is incorrect.</div>
+</div>
+            <label for="email">Email</label>
+          </div>
+          <div class="form-floating mb-3">
+<input
+id="password" 
+type="password"
+class="form-control"
+placeholder="Password"
+formControlName="password"
+[ngClass]="{'is-invalid': registerForm.get('password')?.touched && registerForm.get('password')?.invalid}"
+    >
+    <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="invalid-feedback">
+      <div *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</div>
+  <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long.</div>
+
+    </div>
+            <label for="password">Password</label>
+          </div>
+          <div class="form-floating mb-3">
+<input
+id="phone"
+type="text"
+class="form-control" 
+placeholder="Phone" 
+formControlName="phone"
+[ngClass]="{'is-invalid': registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid}"
+>
+<div *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid" class="invalid-feedback">
+<div *ngIf="registerForm.get('phone')?.errors?.['required']">phone is required.</div>
+</div>
+
+
+            <label for="phone">Phone</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select id="role" class="form-select" formControlName="role">
+              <option value="Host">Host</option>
+              <option value="Guest">Guest</option>
+            </select>
+            <label for="role">Role</label>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</div>
