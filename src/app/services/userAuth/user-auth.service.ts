@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class AuthService {
   user: BehaviorSubject<boolean>;
+  private userSubject = new BehaviorSubject<any>(null);
 
   private registerUrl = 'http://localhost:3001/register';
   private loginUrl = 'http://localhost:3001/login';
@@ -61,8 +62,45 @@ export class AuthService {
         const decodedToken = this.decodeToken(token);
         console.log(decodedToken);
         console.log(decodedToken.role);
-        return decodedToken?.role || null;
-        
+        console.log(decodedToken.id);
+        return decodedToken?.role || null;       
+      }
+    }
+    return null;
+  }
+
+  
+  getUserId(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        // Decode the token to get the user role
+        const decodedToken = this.decodeToken(token);
+        console.log(decodedToken);
+        const id = decodedToken.id
+        console.log(id);
+        return decodedToken?.id || null;       
+      }
+    }
+    return null;
+  }
+  getUserName(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        const decodedToken: any = this.decodeToken(token);
+        return decodedToken?.name || null;
+      }
+    }
+    return null;
+  }
+
+  getUserEmail(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('userToken');
+      if (token) {
+        const decodedToken: any = this.decodeToken(token);
+        return decodedToken?.email || null;
       }
     }
     return null;

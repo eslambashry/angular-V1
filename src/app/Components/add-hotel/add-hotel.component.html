@@ -1,1 +1,58 @@
-<p>add-hotel works!</p>
+<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()" class="container mt-4">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input id="title" formControlName="title" type="text" class="form-control" />
+    <div *ngIf="hotelForm.get('title')?.invalid && hotelForm.get('title')?.touched" class="text-danger">
+      Title is required
+    </div>
+  </div>
+  
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea id="description" formControlName="description" class="form-control"></textarea>
+  </div>
+  
+  <div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <input id="price" formControlName="price" type="number" class="form-control" />
+    <div *ngIf="hotelForm.get('price')?.invalid && hotelForm.get('price')?.touched" class="text-danger">
+      Price is required
+    </div>
+  </div>
+  
+  <div formGroupName="location" class="mb-3">
+    <h3>Location</h3>
+    <label for="address" class="form-label">Address</label>
+    <input id="address" formControlName="address" type="text" class="form-control" />
+    
+    <label for="city" class="form-label">City</label>
+    <input id="city" formControlName="city" type="text" class="form-control" />
+    
+    <label for="state" class="form-label">State</label>
+    <input id="state" formControlName="state" type="text" class="form-control" />
+    
+    <label for="country" class="form-label">Country</label>
+    <input id="country" formControlName="country" type="text" class="form-control" />
+    
+    <label for="zipCode" class="form-label">Zip Code</label>
+    <input id="zipCode" formControlName="zipCode" type="text" class="form-control" />
+  </div>
+  
+  <!-- Remove owner form group and add user details -->
+  <input type="hidden" formControlName="ownerId" [value]="userId" />
+  <input type="hidden" formControlName="ownerName" [value]="userName" />
+  <input type="hidden" formControlName="ownerEmail" [value]="userEmail" />
+
+  <!-- Add similar sections for amenities, photos, reviews, and bookingDetails -->
+
+  <div class="mb-3">
+    <label for="type" class="form-label">Type</label>
+    <select id="type" formControlName="type" class="form-select">
+      <option value="Entire home">Entire home</option>
+      <option value="Private room">Private room</option>
+      <option value="Shared room">Shared room</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary" [disabled]="hotelForm.invalid">Add Hotel</button>
+</form>
