@@ -10,10 +10,14 @@ import { RouterModule } from '@angular/router';
   styleUrl: './favorites.component.css'
 })
 export class FavoritesComponent implements OnInit {
+  isLoading = true;
   favoriteProducts: any[] = [];
 
   ngOnInit(): void {
-    this.loadFavorites();
+    setTimeout(()=>{
+      this.loadFavorites();
+    this.isLoading = false;
+    },3000)
   }
 
   loadFavorites(): void {

@@ -51,6 +51,7 @@
             </button>
           </div>
           <button class="btn btn-outline-danger" (click)="toggleFavorite(property)">
+            Add To Favorite
             <i class="fa" [ngClass]="isFavorite(property) ? 'fa-heart' : 'fa-heart-o'"></i>
           </button>
           <a [routerLink]="['/hotel-details', property._id]">
