@@ -8,6 +8,7 @@ import { BookingComponent } from './Components/booking/booking.component';
 import { authGuard } from './guards/auth.guard';
 import { AddHotelComponent } from './Components/add-hotel/add-hotel.component';
 import { hostGuard } from './guards/Host/host.guard';
+import { FavoritesComponent } from './Components/favorites/favorites.component';
 
 export const routes: Routes = [
 
@@ -17,6 +18,9 @@ export const routes: Routes = [
     {path:'login',component:LoginComponent},
     {path:'booking',component:BookingComponent,canActivate:[authGuard]},
     {path:'add',component:AddHotelComponent,canActivate:[hostGuard]},
+    {path:'favorites',component:FavoritesComponent},
+
 
     {path:'**',component:NotFoundComponent}
 ];
+    

@@ -20,6 +20,11 @@ export class AddHotelComponent {
   userId: string | null = null;
   userName: string | null = null;
   userEmail: string | null = null;
+  amenitiesList = [
+    "WiFi", "Heating", "Kitchen", "Pool", "Private Beach", "Fireplace", 
+    "Hot Tub", "Parking", "Gym", "Rooftop", "Concierge", "Backyard", 
+    "Air Conditioning", "Beach Access", "Garden"
+  ];
   
   constructor(
     private fb: FormBuilder,
@@ -41,7 +46,7 @@ export class AddHotelComponent {
       ownerId: [''], // Hidden field for user ID
       ownerName: [''], // Hidden field for user name
       ownerEmail: [''], 
-      amenities: this.fb.array([]),
+      amenities: [[]],
       photos: this.fb.array([]),
       reviews: this.fb.array([]),
       rating: [''],
@@ -68,6 +73,7 @@ export class AddHotelComponent {
       ownerEmail: this.userEmail
     });
 
+    
   }
   onSubmit() {
     if (this.hotelForm.valid) {
@@ -86,3 +92,4 @@ export class AddHotelComponent {
     }
   }
 }
+   

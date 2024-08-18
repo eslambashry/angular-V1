@@ -15,8 +15,25 @@
   </div>
   
   <div *ngIf="!isLoading" class="container mt-5">
-    <div class="row">
-      <div *ngFor="let property of properties" class="col-md-4 mb-4">
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search by title" [(ngModel)]="searchTerm">
+      </div>
+      <div class="col-md-4">
+        <select class="form-control" [(ngModel)]="selectedCity">
+          <option value="">All Cities</option>
+          <option *ngFor="let city of uniqueCities">{{ city }}</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-control" [(ngModel)]="selectedAmenity">
+          <option value="">All Amenities</option>
+          <option *ngFor="let amenity of uniqueAmenities">{{ amenity }}</option>
+        </select>
+      </div>
+    </div>
+   <div class="row">
+      <div *ngFor="let property of filteredProperties()" class="col-md-4 mb-4">
         <div class="card product-card">
           <div id="carousel{{property.id}}" class="carousel slide product-image" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -33,6 +50,9 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
+          <button class="btn btn-outline-danger" (click)="toggleFavorite(property)">
+            <i class="fa" [ngClass]="isFavorite(property) ? 'fa-heart' : 'fa-heart-o'"></i>
+          </button>
           <a [routerLink]="['/hotel-details', property._id]">
             <div class="card-body">
               <h5 class="card-title product-title">{{ property.title }}</h5>

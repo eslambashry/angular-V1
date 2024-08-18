@@ -38,12 +38,24 @@
     <input id="zipCode" formControlName="zipCode" type="text" class="form-control" />
   </div>
   
+  <!-- Add dropdown for amenities -->
+  <div class="mb-3">
+    <label for="amenities" class="form-label">Amenities</label>
+    <select id="amenities" formControlName="amenities" class="form-select" multiple>
+      <option *ngFor="let amenity of amenitiesList" [value]="amenity">{{ amenity }}</option>
+    </select>
+  </div>
+  
+  <!-- File input for uploading photos -->
+  <!-- <div class="mb-3">
+    <label for="photos" class="form-label">Upload Photos</label>
+    <input id="photos" type="file" (change)="onFileSelected($event)" class="form-control" multiple />
+  </div> -->
+
   <!-- Remove owner form group and add user details -->
   <input type="hidden" formControlName="ownerId" [value]="userId" />
   <input type="hidden" formControlName="ownerName" [value]="userName" />
   <input type="hidden" formControlName="ownerEmail" [value]="userEmail" />
-
-  <!-- Add similar sections for amenities, photos, reviews, and bookingDetails -->
 
   <div class="mb-3">
     <label for="type" class="form-label">Type</label>

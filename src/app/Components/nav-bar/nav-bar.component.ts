@@ -5,6 +5,7 @@ import { AuthService } from '../../services/userAuth/user-auth.service';
 import { CommonModule, NgClass } from '@angular/common';
 import { SharedAlertComponent } from '../shared-alert/shared-alert.component';
 import { FormsModule } from '@angular/forms'; // Import FormsModule here
+import { FavoriteService } from '../../services/favorite.service';
 
 
 
@@ -32,9 +33,17 @@ export class NavBarComponent implements OnInit{
   loginAlertMessage: string = '';
   showRegisterErrorAlert: any;
 
-  constructor(private fb: FormBuilder,private authService: AuthService) { }
+  favoriteCount: number = 0;
+
+
+
+  constructor(private fb: FormBuilder,private authService: AuthService,private favoriteService: FavoriteService) { }
+
 
   ngOnInit(): void {
+    this.favoriteService.favoriteCount$.subscribe(count => {
+      this.favoriteCount = count;})
+
     this.loginForm = this.fb.group({
       email: ['', 
         [
@@ -138,4 +147,7 @@ export class NavBarComponent implements OnInit{
     // this.router.navigate(['/login']); // or wherever you want to redirect
     alert("Loged out")
   }
+
+  
+
 }
