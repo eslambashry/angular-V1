@@ -7,7 +7,7 @@ export interface Location {
 }
 
 export interface Owner {
-  id?: string; // Assuming User ID
+  id?: string; 
   name?: string;
   email?: string;
 }

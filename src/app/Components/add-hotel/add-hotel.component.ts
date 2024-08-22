@@ -79,6 +79,7 @@ export class AddHotelComponent {
     if (this.hotelForm.valid) {
       this.hotelService.addProduct(this.hotelForm.value).subscribe(
         response => {
+          alert("Hotel Added successfully")
           console.log('Form Data:', this.hotelForm.value);
           console.log('Product added successfully', response);
 

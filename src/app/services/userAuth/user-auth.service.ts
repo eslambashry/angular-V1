@@ -117,7 +117,7 @@ export class AuthService {
 }
 
 
-  /*
+  /* 
   Platform Injection:
 
 PLATFORM_ID is injected into the service to determine if the code is running in the browser or on the server.
