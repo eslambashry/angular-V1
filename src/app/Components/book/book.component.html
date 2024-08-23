@@ -1,6 +1,25 @@
+<div *ngIf="isLoading" class="text-center mt-5">
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+
+<div *ngIf="!isLoading">
 <div class="container mt-5">
     @if(property){
-
+      <app-shared-alert *ngIf="showBookingSuccessfull" type="success" [message]="showBookingMessage"></app-shared-alert>
+      <app-shared-alert *ngIf="showBookingErorr" type="danger" [message]="showBookingMessage"></app-shared-alert>
+      
     <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="p-4 border rounded shadow-sm bg-light">
       <div class="mb-3">
         <label for="checkInDate" class="form-label">Check-In Date:</label>
@@ -23,5 +42,7 @@
 @else {
     <p>ERROR</p>
 }
+  </div>
+
   </div>
   

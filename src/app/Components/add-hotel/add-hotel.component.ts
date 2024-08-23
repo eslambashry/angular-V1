@@ -1,21 +1,21 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { HotelService } from '../../services/hotels.service';
-import { Hotel } from '../../models/hotels';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms'; // Import ReactiveFormsModule
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/userAuth/user-auth.service';
+import { SharedAlertComponent } from '../shared-alert/shared-alert.component';
 
 
 
 @Component({
   selector: 'app-add-hotel',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,SharedAlertComponent],
   templateUrl: './add-hotel.component.html',
   styleUrl: './add-hotel.component.css'
 })
-export class AddHotelComponent {
+export class AddHotelComponent implements OnInit{
   hotelForm: FormGroup;
   userId: string | null = null;
   userName: string | null = null;
@@ -25,6 +25,11 @@ export class AddHotelComponent {
     "Hot Tub", "Parking", "Gym", "Rooftop", "Concierge", "Backyard", 
     "Air Conditioning", "Beach Access", "Garden"
   ];
+  showAddedSuccessfull: boolean = false;
+  showAddedErorr: boolean = false;
+  showAddedMessage: string = "" 
+  isLoading = true;
+
   
   constructor(
     private fb: FormBuilder,
@@ -59,6 +64,8 @@ export class AddHotelComponent {
     });
   }
   ngOnInit(): void {
+  setTimeout(() => {
+    
     this.userId = this.authService.getUserId();
     this.userName = this.authService.getUserName();
     this.userEmail = this.authService.getUserEmail();
@@ -73,24 +80,57 @@ export class AddHotelComponent {
       ownerEmail: this.userEmail
     });
 
+    this.isLoading = false;
+  }, 2000);
     
   }
+  
+  get photos(): FormArray {
+    return this.hotelForm.get('photos') as FormArray;
+  }
+
+  addPhoto(photo: { url?: string; caption?: string;} = { url: '' }): void {
+    this.photos.push(this.fb.group({
+      url: [photo.url || ''],
+      caption: [photo.caption || ''],
+    }));
+  }
+
+
   onSubmit() {
     if (this.hotelForm.valid) {
       this.hotelService.addProduct(this.hotelForm.value).subscribe(
         response => {
-          alert("Hotel Added successfully")
+          this.showAddedSuccessfull = true;
+          this.showAddedErorr = false;
+          this.showAddedMessage = "Hotel Added Successfully" 
           console.log('Form Data:', this.hotelForm.value);
           console.log('Product added successfully', response);
+          this.hotelForm.reset();
 
-          // Handle success (e.g., show a success message, reset the form)
+          setTimeout(() => {
+            this.showAddedSuccessfull= false;
+            }, 3000);
         },
         error => {
           console.error('Error adding product', error);
-          // Handle error (e.g., show an error message)
-        }
+          this.showAddedSuccessfull = false;
+          this.showAddedErorr = true;
+          this.showAddedMessage = "Error adding product" 
+          setTimeout(() => {
+            this.showAddedErorr= false;
+            }, 3000);        }
       );
     }
+    else{
+      this.showAddedSuccessfull = false;
+      this.showAddedErorr = true;
+      this.showAddedMessage = "Please Enter Your Data" 
+      setTimeout(() => {
+        this.showAddedErorr= false;
+        }, 3000);
+    }
+    
   }
 }
    

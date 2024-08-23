@@ -1,3 +1,20 @@
+<div *ngIf="isLoading" class="text-center mt-5">
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+
+<div *ngIf="!isLoading">
 <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()" class="container mt-4">
   <div class="mb-3">
     <label for="title" class="form-label">Title</label>
@@ -19,7 +36,18 @@
       Price is required
     </div>
   </div>
-  
+
+  <div class="mb-3">
+    <label for="photos" class="form-label">Photos</label>
+    <div formArrayName="photos">
+      <div *ngFor="let photo of photos.controls; let i = index" [formGroupName]="i" class="mb-2">
+        <input formControlName="url" type="text" class="form-control mb-1" placeholder="Enter photo URL" />
+        <input formControlName="caption" type="text" class="form-control mb-1" placeholder="Enter photo caption" />
+      </div>
+    </div>
+    <button type="button" (click)="addPhoto()" class="btn btn-warning mt-2">Add Photo</button>
+  </div>
+
   <div formGroupName="location" class="mb-3">
     <h3>Location</h3>
     <label for="address" class="form-label">Address</label>
@@ -46,6 +74,7 @@
     </select>
   </div>
   
+  
   <!-- File input for uploading photos -->
   <!-- <div class="mb-3">
     <label for="photos" class="form-label">Upload Photos</label>
@@ -65,6 +94,8 @@
       <option value="Shared room">Shared room</option>
     </select>
   </div>
-
-  <button type="submit" class="btn btn-primary" [disabled]="hotelForm.invalid">Add Hotel</button>
+  <app-shared-alert *ngIf="showAddedSuccessfull" type="success" [message]="showAddedMessage"></app-shared-alert>
+  <app-shared-alert *ngIf="showAddedErorr" type="danger" [message]="showAddedMessage"></app-shared-alert>
+  <button type="submit" class="btn btn-dark" >Add Hotel</button>
 </form>
+</div>

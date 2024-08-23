@@ -24,7 +24,7 @@ export class HotelService {
 
   }
 
-  addProduct(product: Hotel): Observable<any> {
-    return this.http.post( `http://localhost:3001/addNewproduct`, product);
+  addProduct(formData: Hotel): Observable<any> {
+    return this.http.post( `http://localhost:3001/addNewproduct`, formData);
   }
 }

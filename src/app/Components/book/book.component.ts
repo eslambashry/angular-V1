@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/userAuth/user-auth.service';
 import { ActivatedRoute } from '@angular/router';
 import { HotelService } from '../../services/hotels.service';
+import { SharedAlertComponent } from '../shared-alert/shared-alert.component';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,SharedAlertComponent],
   templateUrl: './book.component.html',
   styleUrl: './book.component.css'
 })
@@ -21,6 +22,12 @@ export class BookComponent implements OnInit{
   products: any[] = []; // To hold the list of products
   selectedProductId: string | null = null;
   property: any;
+  showBookingSuccessfull: boolean = false;
+  showBookingErorr: boolean = false;
+  showBookingMessage: string = "" 
+  isLoading = true;
+
+  
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +51,8 @@ export class BookComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    setTimeout(() => {
+
     this.userId = this.authService.getUserId();
     this.userName = this.authService.getUserName();
     this.userEmail = this.authService.getUserEmail();
@@ -72,22 +81,42 @@ export class BookComponent implements OnInit{
       // console.log(this.property);
       
     });
+    
+    this.isLoading = false;
+  }, 2000);
+    
   }
+
 
   
   onSubmit() {
     if (this.bookingForm.valid) {
       this.bookingService.createBooking(this.bookingForm.value).subscribe(
         response => {
-          alert("Booking Done Successfully")
+          this.showBookingSuccessfull= true;
+          this.showBookingMessage= "Your booking done successfully"
           console.log('Form Data:', this.bookingForm.value);
           console.log('Booking created successfully', response);
+          setTimeout(() => {
+          this.showBookingSuccessfull= false;
+          }, 3000);
+  
 
         },
         error => {
           console.error('Error creating booking', error);
+
         }
       );
+    }
+    else{
+      this.showBookingErorr= true;
+      this.showBookingMessage= "Please Enter Your Data"
+      setTimeout(() => {
+      this.showBookingErorr= false;
+      }, 3000);
+
+
     }
   }
 }
