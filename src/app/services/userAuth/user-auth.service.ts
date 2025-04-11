@@ -11,8 +11,8 @@ export class AuthService {
   user: BehaviorSubject<boolean>;
   private userSubject = new BehaviorSubject<any>(null);
 
-  private registerUrl = 'https://backend-angular-project.vercel.app/register';
-  private loginUrl = 'https://backend-angular-project.vercel.app/login';
+  private registerUrl = 'https://airbnb-backend-plum.vercel.app/register';
+  private loginUrl = 'https://airbnb-backend-plum.vercel.app/login';
 
   constructor(
     private http: HttpClient,
