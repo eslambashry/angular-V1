@@ -10,7 +10,7 @@ export class BookingService {
   constructor(private http: HttpClient) { }
 
   createBooking(booking: any): Observable<any> {
-    return this.http.post( `https://backend-angular-project.vercel.app/bookings`, booking);
+    return this.http.post( `https://airbnb-backend-plum.vercel.app/bookings`, booking);
   }
 
 }
