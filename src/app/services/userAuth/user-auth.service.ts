@@ -11,8 +11,8 @@ export class AuthService {
   user: BehaviorSubject<boolean>;
   private userSubject = new BehaviorSubject<any>(null);
 
-  private registerUrl = 'http://localhost:3001/register';
-  private loginUrl = 'http://localhost:3001/login';
+  private registerUrl = 'https://backend-angular-project.vercel.app/register';
+  private loginUrl = 'https://backend-angular-project.vercel.app/login';
 
   constructor(
     private http: HttpClient,

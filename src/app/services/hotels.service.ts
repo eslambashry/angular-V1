@@ -16,19 +16,19 @@ export class HotelService {
  
 
   getProperties():Observable<any>{
-    return this.http.get(`http://localhost:3001/getAllproducts`)
+    return this.http.get(`https://backend-angular-project.vercel.app/getAllproducts`)
   }
 
   getHotelsById(id:any):Observable<any>{
-    return this.http.get(`http://localhost:3001/getProductById/${id}`)
+    return this.http.get(`https://backend-angular-project.vercel.app/getProductById/${id}`)
 
   }
 
   addProduct(formData: Hotel): Observable<any> {
-    return this.http.post( `http://localhost:3001/addNewproduct`, formData);
+    return this.http.post( `https://backend-angular-project.vercel.app/addNewproduct`, formData);
   }
 
   addProductWithImage(formData: FormData): Observable<any> {
-    return this.http.post<any>(`http://localhost:3001/addNewproduct`, formData);
+    return this.http.post<any>(`https://backend-angular-project.vercel.app/addNewproduct`, formData);
   }
 }
