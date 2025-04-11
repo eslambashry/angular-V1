@@ -1,14 +1,5 @@
 <div *ngIf="isLoading" class="text-center mt-5">
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="spinner-grow text-danger" role="status">
+  <div class="spinner-border text-primary" role="status">
     <span class="visually-hidden">Loading...</span>
   </div>
 </div>
@@ -17,73 +8,79 @@
   @if(property){
   <div class="container mt-5">
     <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <div class="card">
-          <div id="propertyCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div *ngFor="let photo of property.photos; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
-                <img [src]="photo.url" class="d-block w-100" [alt]="photo.caption">
-                <div class="carousel-caption d-none d-md-block">
-                  <h5>{{ photo.caption }}</h5>
+
+      <!-- Left section: Images -->
+      <!-- <div class="col-md-7">
+        <img [src]="property.photos[0]?.url" class="img-fluid rounded mb-3 main-photo" [alt]="property.photos[0]?.caption">
+
+        <div class="row">
+          <div class="col-4" *ngFor="let photo of property.photos.slice(1, 4)">
+            <img [src]="photo.url" class="img-fluid rounded mb-2 sub-photo" [alt]="photo.caption">
+          </div>
+        </div>
+      </div> -->
+
+            <!-- Left section: Images -->
+            <div class="col-md-7">
+              <img [src]="mainPhotoUrl || property.photos[0]?.secure_url" class="img-fluid rounded mb-3 main-photo" [alt]="property.photos[0]?.caption">
+      
+              <div class="row">
+                <div class="col-4" *ngFor="let photo of property.photos.slice(1, 4)">
+                  <img [src]="photo.secure_url" class="img-fluid rounded mb-2 sub-photo" [alt]="photo.caption" (click)="mainPhotoUrl = photo.secure_url">
                 </div>
               </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ property.title }}</h5>
-            <p class="card-text">{{ property.description }}</p>
-            <p><strong>Price:</strong> {{ property.price | currency: '€' }} </p>
-            <p><strong>Location:</strong> {{ property.location.address }}, {{ property.location.city }}, {{ property.location.state }}, {{ property.location.country }} - {{ property.location.zipCode }}</p>
-            <p><strong>Type:</strong> {{ property.type }}</p>
+      
+            <!-- Right section: Info and booking -->
+      <!-- Right section: Info and booking -->
+      <div class="col-md-5">
+        <h2>{{ property.title }}</h2>
+        <p><strong>Location:</strong> {{ property.location.city }}, {{ property.location.state }}, {{ property.location.country }}</p>
+        <p><strong>Price:</strong> {{ property.price | currency: '€' }}</p>
 
-            <h6>Amenities:</h6>
-            <ul class="list-inline">
-              <li *ngFor="let amenity of property.amenities" class="list-inline-item badge bg-primary">{{ amenity }}</li>
-            </ul>
+        <div class="mb-3">
+          <h6>Amenities:</h6>
+          <span *ngFor="let amenity of property.amenities" class="badge text-white me-2 mb-2" style="background: linear-gradient(to right, #4A00E0, #8E2DE2);">
+            {{ amenity }}
+          </span>
+        </div>
 
-            <h6>Booking Details:</h6>
-            <p><strong>Check-In:</strong> {{ property.bookingDetails.checkInDate | date:'yyyy-MM-dd' }}</p>
-            <p><strong>Check-Out:</strong> {{ property.bookingDetails.checkOutDate | date:'yyyy-MM-dd' }}</p>
-            <p><strong>Available Dates:</strong></p>
-            <ul>
-              <li *ngFor="let date of property.bookingDetails.availableDates">{{ date | date:'yyyy-MM-dd' }}</li>
-            </ul>
+        <div class="mb-3">
+          <h6>Available Dates:</h6>
+          <ng-container *ngIf="property.bookingDetails.availableDates?.length">
+            <ngb-datepicker #dp [(ngModel)]="model" [markDisabled]="isDisabled"></ngb-datepicker>
+          </ng-container>
+        </div>
 
-            <h6>Owner Details:</h6>
-            <p><strong>Name:</strong> {{ property.owner.name }}</p>
-            <p><strong>Email:</strong> {{ property.owner.email }}</p>
+        <div class="mb-3">
+          <h6>Owner:</h6>
+          <p>{{ property.owner.name }} | {{ property.owner.email }}</p>
+        </div>
 
-            <div class="mb-3">
-              <h6>Reviews:</h6>
-              <div *ngFor="let review of property.reviews" class="review">
-                <p><strong>Rating:</strong> {{ review.rating }}</p>
-                <p><strong>Comment:</strong> {{ review.comment }}</p>
-                <p><strong>Date:</strong> {{ review.date | date:'yyyy-MM-dd' }}</p>
-              </div>
-            </div>
+        <a [routerLink]="['/booking', property._id]">
+          <button class="btn btn-danger w-100">Reserve Now</button>
+        </a>
 
-            <p class="text-muted"><small>Created on: {{ property.createdAt | date:'yyyy-MM-dd' }}</small></p>
-            <p class="text-muted"><small>Updated on: {{ property.updatedAt | date:'yyyy-MM-dd' }}</small></p>
-          </div>
+        <p class="text-muted mt-2"><small>Created: {{ property.createdAt | date:'yyyy-MM-dd' }}</small><br>
+        <small>Updated: {{ property.updatedAt | date:'yyyy-MM-dd' }}</small></p>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="row mt-5">
+      <div class="col-md-8 offset-md-2">
+        <h5>Reviews</h5>
+        <div *ngFor="let review of property.reviews" class="review mb-3">
+          <p><strong>Rating:</strong> {{ review.rating }}</p>
+          <p><strong>Comment:</strong> {{ review.comment }}</p>
+          <p><strong>Date:</strong> {{ review.date | date:'yyyy-MM-dd' }}</p>
         </div>
       </div>
     </div>
-    <a [routerLink]="['/booking', property._id]" routerLinkActive="active" class="nav-link" href="/booking">
-      <button  class="btn btn-danger">check out</button>
-    </a>
-
   </div>
   }
-  
   @else{
-      <strong>Product Not Found</strong>
+    <strong>Property Not Found</strong>
   }
 </div>
+

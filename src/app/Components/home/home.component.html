@@ -38,7 +38,7 @@
           <div id="carousel{{property.id}}" class="carousel slide product-image" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div *ngFor="let photo of property.photos; let i = index" class="carousel-item" [ngClass]="{'active': i === 0}">
-                <img [src]="photo.url" [alt]="photo.caption" class="d-block w-100">
+                <img [src]="photo.secure_url || photo.url" [alt]="photo.caption || 'Image'" class="d-block w-100">
               </div>
             </div>
             <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + property.id" data-bs-slide="prev">
@@ -61,7 +61,7 @@
               <div class="product-price card-text">{{ property.price | currency:'€' }}</div>
               <div class="product-rating">
                 <span class="rating-value">{{ property.rating }}</span>
-                <span class="rating-count">({{ property.reviews.length }} reviews)</span>
+                <span class="rating-count">({{ property.reviews?.length }} reviews)</span>
               </div>
               <div class="product-amenities">
                 <ul class="list-unstyled">

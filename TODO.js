@@ -2,6 +2,7 @@
 
  TODO 
     ^ Make Better UI   
+    ! payment - user profile  
     ! Add Reviews 
     ~ -Add Favourites & -Add Reviews  For Every User To DB 
     ? Child Route 

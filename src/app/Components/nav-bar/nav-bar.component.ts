@@ -12,7 +12,7 @@ import { FavoriteService } from '../../services/favorite.service';
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [RouterOutlet,RouterLink,RouterLinkActive,ReactiveFormsModule,CommonModule,NgClass,SharedAlertComponent,FormsModule],
+  imports: [RouterLink,RouterLinkActive,ReactiveFormsModule,CommonModule,NgClass,SharedAlertComponent,FormsModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.css'
 })
@@ -57,7 +57,7 @@ export class NavBarComponent implements OnInit{
     });
 
     this.registerForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(15),Validators.minLength(5)]],
+      userName: ['', [Validators.required, Validators.maxLength(15),Validators.minLength(5)]],
       email: ['', 
     [ Validators.required, 
       Validators.email,
@@ -66,7 +66,7 @@ export class NavBarComponent implements OnInit{
       Validators.pattern(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)]],
       password: ['', [Validators.required,Validators.minLength(8)]],
       phone: ['',[Validators.required]], 
-      role: ['Guest',[Validators.required]]
+      role: ['',[Validators.required]]
     });
 
     this.authService.getUserState().subscribe((state)=>{
@@ -109,38 +109,54 @@ export class NavBarComponent implements OnInit{
     } else {
       this.registerAlertMessage = 'Please Enter Your Data';
           this.showRegisterErrorAlert = true;
-      console.error('Form is invalid');
-      console.log(this.registerForm); // Log the form status and controls
+          setTimeout(() => {
+            this.showRegisterErrorAlert = false;
+          }, 3000);
     }
   }
   
   onLogin(): void {
     if (this.loginForm.valid) {
-      // console.log(this.loginForm.valid);  
-      this.authService.login(this.loginForm.value).subscribe(response => {
-        this.authService.saveToken(response.token);
-        this.loginAlertMessage = 'Login successful!';
-        this.showLoginSuccessAlert = true;
-        this.showLoginErrorAlert = false;
-        this.loginForm.reset();
-    
-        setTimeout(() => {
-          this.showLoginSuccessAlert = false;
-        }, 3000);
-        console.log('Login successful', response);
-      }, error => {
-        this.loginAlertMessage = 'Email or password is not correct';
-          this.showLoginErrorAlert = true;
-        console.error('Error during login', error);
-        setTimeout(() => {
+      this.authService.login(this.loginForm.value).subscribe(
+        response => {
+          console.log('Login response:', response);  // Log full response
+  
+          if (response && response.token) {
+            this.authService.saveToken(response.token);
+            console.log('Token saved successfully:', response.token);
+          } else {
+            console.error('Token not found in response');
+          }
+  
+          this.loginAlertMessage = 'Login successful!';
+          this.showLoginSuccessAlert = true;
           this.showLoginErrorAlert = false;
-        }, 3000);
-
-      });
+          this.loginForm.reset();
+  
+          setTimeout(() => {
+            this.showLoginSuccessAlert = false;
+          }, 3000);
+        },
+        error => {
+          console.error('Error during login', error);  // Log error details
+          this.loginAlertMessage = 'Email or password is not correct';
+          this.showLoginErrorAlert = true;
+  
+          setTimeout(() => {
+            this.showLoginErrorAlert = false;
+          }, 3000);
+        }
+      );
+    } else {
+      this.loginAlertMessage = 'Please enter your data';
+      this.showLoginErrorAlert = true;
+  
+      setTimeout(() => {
+        this.showLoginErrorAlert = false;
+      }, 3000);
     }
-    else{this.loginAlertMessage = 'Please Enter Your Data';
-          this.showLoginErrorAlert = true;}
   }
+  
   onLogout(): void {
     this.authService.removeToken();
     // Optionally, you might want to navigate to a login or home page after logout

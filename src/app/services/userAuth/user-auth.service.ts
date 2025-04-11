@@ -61,8 +61,8 @@ export class AuthService {
         // Decode the token to get the user role
         const decodedToken = this.decodeToken(token);
         console.log(decodedToken);
-        console.log(decodedToken.role);
-        console.log(decodedToken.id);
+        // console.log(decodedToken.role);
+        // console.log(decodedToken.id);
         return decodedToken?.role || null;       
       }
     }
@@ -75,11 +75,11 @@ export class AuthService {
       const token = localStorage.getItem('userToken');
       if (token) {
         // Decode the token to get the user role
-        const decodedToken = this.decodeToken(token);
+        const decodedToken = this.decodeToken(token);        
         console.log(decodedToken);
-        const id = decodedToken.id
-        console.log(id);
-        return decodedToken?.id || null;       
+        // const id = decodedToken._id
+        // console.log(id,"USER ID //");
+        return decodedToken?._id || null;       
       }
     }
     return null;
@@ -89,7 +89,7 @@ export class AuthService {
       const token = localStorage.getItem('userToken');
       if (token) {
         const decodedToken: any = this.decodeToken(token);
-        return decodedToken?.name || null;
+        return decodedToken?.userName || null;
       }
     }
     return null;

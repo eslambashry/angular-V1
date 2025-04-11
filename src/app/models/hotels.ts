@@ -33,6 +33,7 @@ export interface BookingDetails {
 
 export interface Hotel {
   _id?: string;
+  mainPhotoUrl:string
   title: string;
   description?: string;
   price?: number;

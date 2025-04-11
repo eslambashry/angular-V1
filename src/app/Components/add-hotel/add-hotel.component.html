@@ -13,89 +13,105 @@
   </div>
 </div>
 
-
 <div *ngIf="!isLoading">
-<form [formGroup]="hotelForm" (ngSubmit)="onSubmit()" class="container mt-4">
-  <div class="mb-3">
-    <label for="title" class="form-label">Title</label>
-    <input id="title" formControlName="title" type="text" class="form-control" />
-    <div *ngIf="hotelForm.get('title')?.invalid && hotelForm.get('title')?.touched" class="text-danger">
-      Title is required
-    </div>
-  </div>
-  
-  <div class="mb-3">
-    <label for="description" class="form-label">Description</label>
-    <textarea id="description" formControlName="description" class="form-control"></textarea>
-  </div>
-  
-  <div class="mb-3">
-    <label for="price" class="form-label">Price</label>
-    <input id="price" formControlName="price" type="number" class="form-control" />
-    <div *ngIf="hotelForm.get('price')?.invalid && hotelForm.get('price')?.touched" class="text-danger">
-      Price is required
-    </div>
-  </div>
-
-  <div class="mb-3">
-    <label for="photos" class="form-label">Photos</label>
-    <div formArrayName="photos">
-      <div *ngFor="let photo of photos.controls; let i = index" [formGroupName]="i" class="mb-2">
-        <input formControlName="url" type="text" class="form-control mb-1" placeholder="Enter photo URL" />
-        <input formControlName="caption" type="text" class="form-control mb-1" placeholder="Enter photo caption" />
+  <form [formGroup]="hotelForm" (ngSubmit)="onSubmit()" class="container mt-4">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input id="title" formControlName="title" type="text" class="form-control" />
+      <div *ngIf="hotelForm.get('title')?.invalid && hotelForm.get('title')?.touched" class="text-danger">
+        Title is required
       </div>
     </div>
-    <button type="button" (click)="addPhoto()" class="btn btn-warning mt-2">Add Photo</button>
-  </div>
-
-  <div formGroupName="location" class="mb-3">
-    <h3>Location</h3>
-    <label for="address" class="form-label">Address</label>
-    <input id="address" formControlName="address" type="text" class="form-control" />
     
-    <label for="city" class="form-label">City</label>
-    <input id="city" formControlName="city" type="text" class="form-control" />
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea id="description" formControlName="description" class="form-control"></textarea>
+    </div>
     
-    <label for="state" class="form-label">State</label>
-    <input id="state" formControlName="state" type="text" class="form-control" />
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input id="price" formControlName="price" type="number" class="form-control" />
+      <div *ngIf="hotelForm.get('price')?.invalid && hotelForm.get('price')?.touched" class="text-danger">
+        Price is required
+      </div>
+    </div>
     
-    <label for="country" class="form-label">Country</label>
-    <input id="country" formControlName="country" type="text" class="form-control" />
+    <!-- <div class="mb-3">
+      <label for="photos" class="form-label">Photos</label>
+      <div formArrayName="photos">
+        <div *ngFor="let photo of photos.controls; let i = index" [formGroupName]="i" class="mb-2">
+          <input formControlName="url" type="text" class="form-control mb-1" placeholder="Enter photo URL" />
+          <input formControlName="caption" type="text" class="form-control mb-1" placeholder="Enter photo caption" />
+        </div>
+      </div>
+    </div> -->
     
-    <label for="zipCode" class="form-label">Zip Code</label>
-    <input id="zipCode" formControlName="zipCode" type="text" class="form-control" />
-  </div>
+    <div formGroupName="location" class="mb-3">
+      <h3>Location</h3>
+      <label for="address" class="form-label">Address</label>
+      <input id="address" formControlName="address" type="text" class="form-control" />
+      
+      <label for="city" class="form-label">City</label>
+      <input id="city" formControlName="city" type="text" class="form-control" />
+      
+      <label for="state" class="form-label">State</label>
+      <input id="state" formControlName="state" type="text" class="form-control" />
+      
+      <label for="country" class="form-label">Country</label>
+      <input id="country" formControlName="country" type="text" class="form-control" />
+      
+      <label for="zipCode" class="form-label">Zip Code</label>
+      <input id="zipCode" formControlName="zipCode" type="text" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+      <label for="amenities" class="form-label">Amenities</label>
+      <select id="amenities" class="form-select" multiple (change)="onAmenitiesChange($event)">
+        <option *ngFor="let amenity of amenitiesList" [value]="amenity">{{ amenity }}</option>
+      </select>
+    </div>
+    
+    <div class="mt-2">
+      <span *ngFor="let amenity of selectedAmenities; let i = index" class="badge bg-secondary me-2">
+        {{ amenity }}
+        <button type="button" class="btn-close btn-close-white ms-1" (click)="removeAmenity(i)"></button>
+      </span>
+    </div>
+    
+ <!-- File input for uploading photos -->
+<div class="mb-3">
+  <label for="propertyPhoto" class="form-label">Upload Property Photo</label>
+  <input id="propertyPhoto" type="file" (change)="onFileSelected($event)" class="form-control" accept="image/*" />
   
-  <!-- Add dropdown for amenities -->
-  <div class="mb-3">
-    <label for="amenities" class="form-label">Amenities</label>
-    <select id="amenities" formControlName="amenities" class="form-select" multiple>
-      <option *ngFor="let amenity of amenitiesList" [value]="amenity">{{ amenity }}</option>
-    </select>
+  <!-- Image preview -->
+  <div *ngIf="imagePreview" class="mt-3 position-relative d-inline-block">
+    <img [src]="imagePreview" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" 
+            (click)="removeImage()">
+      ×
+    </button>
   </div>
-  
-  
-  <!-- File input for uploading photos -->
-  <!-- <div class="mb-3">
-    <label for="photos" class="form-label">Upload Photos</label>
-    <input id="photos" type="file" (change)="onFileSelected($event)" class="form-control" multiple />
-  </div> -->
+</div>
 
-  <!-- Remove owner form group and add user details -->
-  <input type="hidden" formControlName="ownerId" [value]="userId" />
-  <input type="hidden" formControlName="ownerName" [value]="userName" />
-  <input type="hidden" formControlName="ownerEmail" [value]="userEmail" />
 
-  <div class="mb-3">
-    <label for="type" class="form-label">Type</label>
-    <select id="type" formControlName="type" class="form-select">
-      <option value="Entire home">Entire home</option>
-      <option value="Private room">Private room</option>
-      <option value="Shared room">Shared room</option>
-    </select>
-  </div>
-  <app-shared-alert *ngIf="showAddedSuccessfull" type="success" [message]="showAddedMessage"></app-shared-alert>
-  <app-shared-alert *ngIf="showAddedErorr" type="danger" [message]="showAddedMessage"></app-shared-alert>
-  <button type="submit" class="btn btn-dark" >Add Hotel</button>
-</form>
+
+    
+    <input type="hidden" formControlName="ownerId" [value]="userId" />
+    <input type="hidden" formControlName="ownerName" [value]="userName" />
+    <input type="hidden" formControlName="ownerEmail" [value]="userEmail" />
+    
+    <div class="mb-3">
+      <label for="type" class="form-label">Type</label>
+      <select id="type" formControlName="type" class="form-select">
+        <option value="Entire home">Entire home</option>
+        <option value="Private room">Private room</option>
+        <option value="Shared room">Shared room</option>
+      </select>
+    </div>
+    
+    <app-shared-alert *ngIf="showAddedSuccessfull" type="success" [message]="showAddedMessage"></app-shared-alert>
+    <app-shared-alert *ngIf="showAddedErorr" type="danger" [message]="showAddedMessage"></app-shared-alert>
+    
+    <button type="submit" class="btn btn-dark">Add Hotel</button>
+  </form>
 </div>
