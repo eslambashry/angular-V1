@@ -45,6 +45,20 @@
         </div>
       </div>
     </div> -->
+    <div formGroupName="bookingDetails" class="mb-3">
+      <h3>Available Dates</h3>
+      
+      <div class="mb-2">
+        <button type="button" class="btn btn-success btn-sm" (click)="addAvailableDate()">+ Add Date</button>
+      </div>
+    
+      <div formArrayName="availableDates">
+        <div *ngFor="let dateControl of availableDates.controls; let i = index" class="mb-2">
+          <input type="date" [formControlName]="i" class="form-control d-inline-block w-auto" />
+          <button type="button" class="btn btn-danger btn-sm ms-2" (click)="removeAvailableDate(i)">✕</button>
+        </div>
+      </div>
+    </div>
     
     <div formGroupName="location" class="mb-3">
       <h3>Location</h3>

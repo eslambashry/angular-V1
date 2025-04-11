@@ -15,6 +15,7 @@ import { SharedAlertComponent } from '../shared-alert/shared-alert.component';
 })
 export class AddHotelComponent implements OnInit {
   hotelForm: FormGroup;
+  availableDates: FormArray;
   userId: string | null = null;
   userName: string | null = null;
   userEmail: string | null = null;
@@ -63,6 +64,7 @@ export class AddHotelComponent implements OnInit {
       type: [''],
       amenities: [[]],
     });
+    this.availableDates = this.hotelForm.get('bookingDetails.availableDates') as FormArray;
   }
 
   ngOnInit(): void {
@@ -125,6 +127,17 @@ export class AddHotelComponent implements OnInit {
     this.imagePreview = null;
   }
 
+    // Add a new date to the available dates array
+    addAvailableDate(): void {
+      const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+      this.availableDates.push(this.fb.control(today));
+    }
+  
+    // Remove a selected date
+    removeAvailableDate(index: number): void {
+      this.availableDates.removeAt(index);
+    }
+  
   onSubmit() {
     if (this.hotelForm.valid) {
       if (!this.selectedFile) {
